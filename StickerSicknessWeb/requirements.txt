@@ -1,0 +1,6 @@
+Flask
+python-barcode
+Pillow
+pylibdmtx
+colorama
+setuptools
