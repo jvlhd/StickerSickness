@@ -13,6 +13,9 @@ Python: Upewnij się, że masz zainstalowanego Pythona (w wersji 3.6 lub nowszej
 	Przejdź do katalogu, w którym znajdują się Twoje pliki skryptów.
 	Aby uruchomić menu, wpisz poniższe polecenie w terminalu:
 
-	python start.py
+	python app.py
 
-	Zobaczysz menu z opcjami do wyboru. Wybierz odpowiednią opcję, aby edytować etykietę.
+	Zobaczysz adres ip edytora.
+	Kliknij na niego trzymając ctrl.
+	Powinna otworzyć się strona edytora etykiet.
+	Miłego etykietowania <3
