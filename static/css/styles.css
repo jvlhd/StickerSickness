@@ -1,0 +1,34 @@
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+.navbar, .card {
+    background-color: #1e1e1e;
+}
+
+.btn-primary {
+    background-color: #bb86fc;
+    border-color: #bb86fc;
+}
+
+.btn-primary:hover {
+    background-color: #3700b3;
+    border-color: #3700b3;
+}
+
+.form-control {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border: 1px solid #bb86fc;
+}
+
+.form-control:focus {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border-color: #3700b3;
+}
+
+h1, h2 {
+    color: #bb86fc;
+}
