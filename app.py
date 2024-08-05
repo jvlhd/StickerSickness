@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, send_file
 import tc5x
 import mc33
+import ck3
 import os
 
 app = Flask(__name__)
@@ -34,5 +35,16 @@ def process_mc33():
     except Exception as e:
         return f"An error occurred: {e}", 500
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)
+@app.route('/process_ck3', methods=['POST'])
+def process_ck3():
+    try:
+        new_cn = request.form['cn']
+        new_sn = request.form['sn']
+        output_path = 'static/edited_ck3.svg'
+        ck3.edit_ck3_label('ck3.svg', output_path, new_cn, new_sn)
+        return send_file(output_path, as_attachment=True)
+    except Exception as e:
+        return f"An error occurred: {e}", 500
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=80)

@@ -1,71 +1,98 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Sticker Sickness</title>
-    <!-- Favicon -->
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <!-- Bootstrap CSS -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StickerSickness</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-      <a class="navbar-brand" href="#">Sticker Sickness</a>
+    <style>
+        body {
+            background-color: #1e1e1e;
+            color: #fff;
+        }
+        .navbar, .footer {
+            background-color: #333;
+        }
+        .form-control, .btn {
+            background-color: #444;
+            color: #fff;
+        }
+        .form-control::placeholder {
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark">
+        <a class="navbar-brand" href="#">StickerSickness</a>
+        <span class="navbar-text" style="color: yellow;">Made by Juliusz Łukasiewicz</span>
     </nav>
     <div class="container mt-5">
-      <div class="row">
-        <div class="col-md-6">
-          <div class="card p-4 mb-4">
-            <h2>Process TC5X Label</h2>
-            <form action="/process_tc5x" method="post">
-              <div class="form-group">
-                <label for="model">Model:</label>
-                <input type="text" class="form-control" id="model" name="model">
-              </div>
-              <div class="form-group">
-                <label for="sn">SN:</label>
-                <input type="text" class="form-control" id="sn" name="sn">
-              </div>
-              <div class="form-group">
-                <label for="pn">PN:</label>
-                <input type="text" class="form-control" id="pn" name="pn">
-              </div>
-              <div class="form-group">
-                <label for="mfd">MFD:</label>
-                <input type="text" class="form-control" id="mfd" name="mfd">
-              </div>
-              <button type="submit" class="btn btn-primary">Process TC5X Label</button>
-            </form>
-          </div>
+        <h1 class="text-center mb-5">Edit Labels</h1>
+        <div class="row">
+            <div class="col-md-4">
+                <h2>TC5X Label</h2>
+                <form action="/process_tc5x" method="POST">
+                    <div class="form-group">
+                        <label for="model">Model</label>
+                        <input type="text" class="form-control" id="model" name="model" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sn">SN</label>
+                        <input type="text" class="form-control" id="sn" name="sn" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pn">PN</label>
+                        <input type="text" class="form-control" id="pn" name="pn" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mfd">MFD</label>
+                        <input type="text" class="form-control" id="mfd" name="mfd" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Generate TC5X Label</button>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <h2>MC33 Label</h2>
+                <form action="/process_mc33" method="POST">
+                    <div class="form-group">
+                        <label for="pn">PN</label>
+                        <input type="text" class="form-control" id="pn" name="pn" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mfd">MFD</label>
+                        <input type="text" class="form-control" id="mfd" name="mfd" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sn">SN</label>
+                        <input type="text" class="form-control" id="sn" name="sn" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Generate MC33 Label</button>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <h2>CK3 Label</h2>
+                <form action="/process_ck3" method="POST">
+                    <div class="form-group">
+                        <label for="cn">CN</label>
+                        <input type="text" class="form-control" id="cn" name="cn" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sn">SN</label>
+                        <input type="text" class="form-control" id="sn" name="sn" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Generate CK3 Label</button>
+                </form>
+            </div>
         </div>
-        <div class="col-md-6">
-          <div class="card p-4 mb-4">
-            <h2>Process MC33 Label</h2>
-            <form action="/process_mc33" method="post">
-              <div class="form-group">
-                <label for="pn">PN:</label>
-                <input type="text" class="form-control" id="pn" name="pn">
-              </div>
-              <div class="form-group">
-                <label for="mfd">MFD:</label>
-                <input type="text" class="form-control" id="mfd" name="mfd">
-              </div>
-              <div class="form-group">
-                <label for="sn">SN:</label>
-                <input type="text" class="form-control" id="sn" name="sn">
-              </div>
-              <button type="submit" class="btn btn-primary">Process MC33 Label</button>
-            </form>
-          </div>
-        </div>
-      </div>
     </div>
-    <!-- Bootstrap JS and dependencies -->
+    <footer class="footer mt-5 py-3 text-center">
+        <div class="container">
+            <span class="text-muted">StickerSickness © 2024</span>
+        </div>
+    </footer>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  </body>
+</body>
 </html>
