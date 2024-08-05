@@ -19,12 +19,26 @@ def trim_whitespace(image, bg_color):
         return image.crop(bbox)
     return image
 
-def generate_barcode_image(data, width, height, fg_color, bg_color):
+def generate_barcode_image(data, width, height, fg_color, bg_color, dpi=300):
     CODE128 = barcode.get_barcode_class('code128')
     writer = ImageWithoutTextWriter()
+
+    # Generate the barcode at a higher resolution
+    high_res_width = width * 10
+    high_res_height = height * 10
+
     barcode_obj = CODE128(data, writer=writer)
     buffer = BytesIO()
-    barcode_obj.write(buffer, {'module_width': 0.2, 'module_height': 15.0, 'quiet_zone': 1.0, 'font_size': 0, 'text_distance': 1.0, 'background': bg_color, 'foreground': fg_color})
+    barcode_obj.write(buffer, {
+        'module_width': 0.2,
+        'module_height': 15.0,
+        'quiet_zone': 1.0,
+        'font_size': 0,
+        'text_distance': 1.0,
+        'background': bg_color,
+        'foreground': fg_color,
+        'dpi': dpi
+    })
     buffer.seek(0)
     img = Image.open(buffer)
 
@@ -99,13 +113,13 @@ def edit_ck3_label(svg_file_path, output_svg_file_path, new_cn, new_sn):
 
         # Replace CN barcode with the same size as SN barcode
         print("Replacing CN barcode...")
-        cn_transform_matrix = "matrix(0.22984615,0,0,0.1411,15.198503,22.832505)"  # Adjusted y position to move up
-        replace_barcode('g2', new_cn, 150, 30, fg_color='#ffffff', bg_color='#00112b', transform_matrix=cn_transform_matrix)
+        cn_transform_matrix = "matrix(0.22984615,0,0,0.1411,15.198503,19.832505)"  # Adjusted y position to move up
+        replace_barcode('g2', new_cn, 168, 30, fg_color='#ffffff', bg_color='#00112b', transform_matrix=cn_transform_matrix)
 
         # Replace SN barcode
         print("Replacing SN barcode...")
         sn_transform_matrix = "matrix(0.22984615,0,0,0.1411,15.198503,26.832505)"  # Use the same matrix as before
-        replace_barcode('barcode1-8-7', new_sn, 150, 30, fg_color='#ffffff', bg_color='#00112b', transform_matrix=sn_transform_matrix)
+        replace_barcode('barcode1-8-7', new_sn, 168, 30, fg_color='#ffffff', bg_color='#00112b', transform_matrix=sn_transform_matrix)
 
         # Write the modified SVG to a new file
         print("Saving the modified SVG file...")
