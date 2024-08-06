@@ -29,8 +29,10 @@ def generate_barcode_svg(data, module_width, module_height, fg_color):
     buffer.seek(0)
     svg_data = buffer.getvalue().decode('utf-8')
 
-    # Remove the unnecessary rect element if it exists
-    svg_data = svg_data.replace('<rect width="100%" height="100%" style="fill:#00112b"/>', '')
+    # Remove any rect elements
+    svg_data = svg_data.replace('<rect width="100%" height="100%" style="fill:none"/>', '')
+    svg_data = svg_data.replace('<rect width="100%" height="100%" style="fill:None"/>', '')
+
     return svg_data
 
 def edit_svg_label(svg_file_path, output_svg_file_path, new_pn, new_mfd, new_sn):
@@ -63,7 +65,6 @@ def edit_svg_label(svg_file_path, output_svg_file_path, new_pn, new_mfd, new_sn)
                 for elem in list(group):
                     group.remove(elem)
 
-                print(f"Generating new barcode image for {group_id}...")
                 barcode_svg = generate_barcode_svg(new_barcode_data, module_width, module_height, fg_color)
                 if barcode_svg is None:
                     print("Failed to generate barcode image.")
@@ -74,11 +75,11 @@ def edit_svg_label(svg_file_path, output_svg_file_path, new_pn, new_mfd, new_sn)
                     group.append(element)
                 group.set('transform', transform_matrix)
             if not found:
-                print(f"Element z id '{group_id}' nie znaleziony.")
+                print(f"Element with id '{group_id}' not found.")
 
         print("Replacing barcode...")
-        barcode_transform_matrix = "matrix(0.2,0,0,0.1,12.035956,21.379793)"  # Adjusting the matrix for smaller size
-        replace_barcode('barcode4', new_sn, 0.35, 6.0, '#000000', barcode_transform_matrix)
+        barcode_transform_matrix = "matrix(0.25220536,0,0,0.1,11.935956,20.979793)"  # Adjusting the matrix for smaller size
+        replace_barcode('barcode4', new_sn, 0.28, 7.0, '#000000', barcode_transform_matrix)
 
         print("Saving the modified SVG file...")
         tree.write(output_svg_file_path)

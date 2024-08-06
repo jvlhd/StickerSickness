@@ -32,8 +32,10 @@ def generate_barcode_svg(data, module_width, module_height, fg_color):
     buffer.seek(0)
     svg_data = buffer.getvalue().decode('utf-8')
 
-    # Remove the unnecessary rect element if it exists
-    svg_data = svg_data.replace('<rect width="100%" height="100%" style="fill:#00112b"/>', '')
+    # Remove any rect elements
+    svg_data = svg_data.replace('<rect width="100%" height="100%" style="fill:none"/>', '')
+    svg_data = svg_data.replace('<rect width="100%" height="100%" style="fill:None"/>', '')
+
     return svg_data
 
 def generate_datamatrix_svg(data, size):
@@ -87,7 +89,7 @@ def edit_tc5x_label(svg_file_path, output_svg_file_path, new_model, new_sn, new_
             if not found:
                 print(f"Element with id '{group_id}' not found.")
 
-        # Replacing barcode with adjusted position and size
+        # Replacing barcode with correct module width and height
         replace_barcode('barcode1', new_sn, 0.2, 8.2, '#000000', 'matrix(0.264583,0,0,0.08456667,25.433834,27.050066)')
 
         def replace_datamatrix(group_id, new_data, size):
@@ -107,7 +109,7 @@ def edit_tc5x_label(svg_file_path, output_svg_file_path, new_model, new_sn, new_
                 image_elem = ET.Element('{http://www.w3.org/2000/svg}image', {
                     'id': f'{group_id}_image',
                     'x': '10',
-                    'y': '10',
+                    'y': '13',
                     'width': '64',
                     'height': '64',
                     'href': image_href,
