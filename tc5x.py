@@ -1,40 +1,48 @@
 import xml.etree.ElementTree as ET
 import barcode
-from barcode.writer import ImageWriter
-import base64
+from barcode.writer import SVGWriter
 from io import BytesIO
-from PIL import Image, ImageChops
+import base64
+from PIL import Image
 from pylibdmtx.pylibdmtx import encode
 
-class ImageWithoutTextWriter(ImageWriter):
-    def _paint_text(self, xpos, ypos):
+class CustomSVGWriter(SVGWriter):
+    def _init(self, code):
+        super()._init(code)
+        self._code = code
+
+    def _paint_background(self, code):
         pass
 
-def trim_whitespace(image):
-    bg = Image.new(image.mode, image.size, (255, 255, 255))
-    diff = ImageChops.difference(image, bg)
-    bbox = diff.getbbox()
-    if bbox:
-        return image.crop(bbox)
-    return image
-
-def generate_barcode_image(data, width, height):
+def generate_barcode_svg(data, module_width, module_height, fg_color):
     CODE128 = barcode.get_barcode_class('code128')
-    writer = ImageWithoutTextWriter()
+    writer = CustomSVGWriter()
+
     barcode_obj = CODE128(data, writer=writer)
     buffer = BytesIO()
-    barcode_obj.write(buffer)
+    barcode_obj.write(buffer, {
+        'module_width': module_width,
+        'module_height': module_height,
+        'quiet_zone': 1.0,
+        'font_size': 0,
+        'text_distance': 1.0,
+        'background': None,
+        'foreground': fg_color,
+    })
     buffer.seek(0)
-    img = Image.open(buffer)
-    img = trim_whitespace(img)
-    img = img.resize((width, height), Image.LANCZOS)
-    buffer = BytesIO()
-    img.save(buffer, format="PNG")
-    return buffer.getvalue()
+    svg_data = buffer.getvalue().decode('utf-8')
 
-def generate_datamatrix_image(data, size):
+    # Remove the unnecessary rect element if it exists
+    svg_data = svg_data.replace('<rect width="100%" height="100%" style="fill:#00112b"/>', '')
+    return svg_data
+
+def generate_datamatrix_svg(data, size):
     encoded = encode(data.encode('utf-8'))
     img = Image.frombytes('RGB', (encoded.width, encoded.height), encoded.pixels)
+    buffer = BytesIO()
+    img.save(buffer, format="PNG")
+    buffer.seek(0)
+    img = Image.open(buffer)
     img = img.resize(size, Image.LANCZOS)
     buffer = BytesIO()
     img.save(buffer, format="PNG")
@@ -60,43 +68,40 @@ def edit_tc5x_label(svg_file_path, output_svg_file_path, new_model, new_sn, new_
         replace_text('text14478-6-3-49', f'P/N: {new_pn}')
         replace_text('text14478-6-3-49-6', f'(S) S/N: {new_sn}')
 
-        def replace_barcode(group_id, new_barcode_data):
+        def replace_barcode(group_id, new_barcode_data, module_width, module_height, fg_color, transform_matrix):
             found = False
             for group in root.findall(f".//svg:g[@id='{group_id}']", namespaces):
                 found = True
                 for elem in list(group):
                     group.remove(elem)
-                barcode_image = generate_barcode_image(new_barcode_data, width=200, height=50)
-                if barcode_image is None:
+
+                barcode_svg = generate_barcode_svg(new_barcode_data, module_width, module_height, fg_color)
+                if barcode_svg is None:
                     print("Failed to generate barcode image.")
                     return
-                barcode_b64 = base64.b64encode(barcode_image).decode('utf-8')
-                image_href = f"data:image/png;base64,{barcode_b64}"
-                image_elem = ET.Element('{http://www.w3.org/2000/svg}image', {
-                    'id': f'{group_id}_image',
-                    'x': '0',
-                    'y': '0',
-                    'width': '100',
-                    'height': '25',
-                    'href': image_href,
-                    'preserveAspectRatio': 'none'
-                })
-                group.append(image_elem)
+
+                barcode_elem = ET.fromstring(barcode_svg)
+                for element in barcode_elem:
+                    group.append(element)
+                group.set('transform', transform_matrix)
             if not found:
                 print(f"Element with id '{group_id}' not found.")
 
-        replace_barcode('barcode1', new_sn)
+        # Replacing barcode with adjusted position and size
+        replace_barcode('barcode1', new_sn, 0.2, 8.2, '#000000', 'matrix(0.264583,0,0,0.08456667,25.433834,27.050066)')
 
-        def replace_datamatrix(group_id, new_data):
+        def replace_datamatrix(group_id, new_data, size):
             found = False
             for group in root.findall(f".//svg:g[@id='{group_id}']", namespaces):
                 found = True
                 for elem in list(group):
                     group.remove(elem)
-                datamatrix_image = generate_datamatrix_image(new_data, (64, 64))
+
+                datamatrix_image = generate_datamatrix_svg(new_data, size)
                 if datamatrix_image is None:
                     print("Failed to generate datamatrix image.")
                     return
+
                 datamatrix_b64 = base64.b64encode(datamatrix_image).decode('utf-8')
                 image_href = f"data:image/png;base64,{datamatrix_b64}"
                 image_elem = ET.Element('{http://www.w3.org/2000/svg}image', {
@@ -112,7 +117,7 @@ def edit_tc5x_label(svg_file_path, output_svg_file_path, new_model, new_sn, new_
             if not found:
                 print(f"Element with id '{group_id}' not found.")
 
-        replace_datamatrix('g12032-5', new_mfd)
+        replace_datamatrix('g12032-5', new_mfd, (32, 32))
         tree.write(output_svg_file_path)
         print("Done.")
     except Exception as e:

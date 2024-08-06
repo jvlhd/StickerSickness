@@ -1,55 +1,39 @@
 import xml.etree.ElementTree as ET
 import barcode
-from barcode.writer import ImageWriter
-import base64
+from barcode.writer import SVGWriter
 from io import BytesIO
-from PIL import Image, ImageChops
 
-# Custom writer class to avoid text rendering below the barcode
-class ImageWithoutTextWriter(ImageWriter):
-    def _paint_text(self, xpos, ypos):
+# Custom writer class to avoid adding background rect
+class CustomSVGWriter(SVGWriter):
+    def _init(self, code):
+        super()._init(code)
+        self._code = code
+
+    def _paint_background(self, code):
+        # Override to do nothing and avoid adding the background rect
         pass
 
-def trim_whitespace(image, bg_color):
-    """Trim the specified background color from an image."""
-    bg = Image.new(image.mode, image.size, bg_color)
-    diff = ImageChops.difference(image, bg)
-    bbox = diff.getbbox()
-    if bbox:
-        return image.crop(bbox)
-    return image
-
-def generate_barcode_image(data, width, height, fg_color, bg_color, dpi=300):
+def generate_barcode_svg(data, module_width, module_height, fg_color):
     CODE128 = barcode.get_barcode_class('code128')
-    writer = ImageWithoutTextWriter()
-
-    # Generate the barcode at a higher resolution
-    high_res_width = width * 10
-    high_res_height = height * 10
+    writer = CustomSVGWriter()
 
     barcode_obj = CODE128(data, writer=writer)
     buffer = BytesIO()
     barcode_obj.write(buffer, {
-        'module_width': 0.2,
-        'module_height': 15.0,
+        'module_width': module_width,
+        'module_height': module_height,
         'quiet_zone': 1.0,
         'font_size': 0,
         'text_distance': 1.0,
-        'background': bg_color,
+        'background': None,
         'foreground': fg_color,
-        'dpi': dpi
     })
     buffer.seek(0)
-    img = Image.open(buffer)
+    svg_data = buffer.getvalue().decode('utf-8')
 
-    # Trim whitespace with background color
-    img = trim_whitespace(img, bg_color)
-
-    # Resize the image to the desired width and height using LANCZOS resampling
-    img = img.resize((width, height), Image.LANCZOS)
-    buffer = BytesIO()
-    img.save(buffer, format="PNG")
-    return buffer.getvalue()
+    # Remove the unnecessary rect element if it exists
+    svg_data = svg_data.replace('<rect width="100%" height="100%" style="fill:#00112b"/>', '')
+    return svg_data
 
 def edit_ck3_label(svg_file_path, output_svg_file_path, new_cn, new_sn):
     try:
@@ -78,7 +62,7 @@ def edit_ck3_label(svg_file_path, output_svg_file_path, new_cn, new_sn):
         replace_text('text4389-8-2', f'SN:{new_sn}')
 
         # Function to replace barcode
-        def replace_barcode(group_id, new_barcode_data, width, height, fg_color, bg_color, transform_matrix):
+        def replace_barcode(group_id, new_barcode_data, module_width, module_height, fg_color, transform_matrix):
             found = False
             for group in root.findall(f".//svg:g[@id='{group_id}']", namespaces):
                 found = True
@@ -89,37 +73,28 @@ def edit_ck3_label(svg_file_path, output_svg_file_path, new_cn, new_sn):
 
                 # Generate new barcode image
                 print(f"Generating new barcode image for {group_id}...")
-                barcode_image = generate_barcode_image(new_barcode_data, width, height, fg_color, bg_color)
-                if barcode_image is None:
+                barcode_svg = generate_barcode_svg(new_barcode_data, module_width, module_height, fg_color)
+                if barcode_svg is None:
                     print("Failed to generate barcode image.")
                     return
-                barcode_b64 = base64.b64encode(barcode_image).decode('utf-8')
-                image_href = f"data:image/png;base64,{barcode_b64}"
 
-                # Insert new barcode image
-                image_elem = ET.Element('{http://www.w3.org/2000/svg}image', {
-                    'id': f'{original_id}_image',
-                    'x': '0',  # Adjusted position x
-                    'y': '0',  # Adjusted position y
-                    'width': str(width),  # Desired width in SVG
-                    'height': str(height),  # Desired height in SVG
-                    'href': image_href,
-                    'preserveAspectRatio': 'none'
-                })
-                group.append(image_elem)
+                # Insert new barcode SVG
+                barcode_elem = ET.fromstring(barcode_svg)
+                for element in barcode_elem:
+                    group.append(element)
                 group.set('transform', transform_matrix)
             if not found:
                 print(f"Element with id '{group_id}' not found.")
 
-        # Replace CN barcode with the same size as SN barcode
+        # Replace CN barcode with adjusted dimensions
         print("Replacing CN barcode...")
-        cn_transform_matrix = "matrix(0.22984615,0,0,0.1411,15.198503,19.832505)"  # Adjusted y position to move up
-        replace_barcode('g2', new_cn, 168, 30, fg_color='#ffffff', bg_color='#00112b', transform_matrix=cn_transform_matrix)
+        cn_transform_matrix = "matrix(0.15,0,0,0.1,15.198503,19.832505)"  # Adjusted transformation matrix for size
+        replace_barcode('g2', new_cn, 0.35, 10.0, fg_color='#ffffff', transform_matrix=cn_transform_matrix)
 
-        # Replace SN barcode
+        # Replace SN barcode with adjusted dimensions
         print("Replacing SN barcode...")
-        sn_transform_matrix = "matrix(0.22984615,0,0,0.1411,15.198503,26.832505)"  # Use the same matrix as before
-        replace_barcode('barcode1-8-7', new_sn, 168, 30, fg_color='#ffffff', bg_color='#00112b', transform_matrix=sn_transform_matrix)
+        sn_transform_matrix = "matrix(0.15,0,0,0.1,15.198503,26.832505)"  # Adjusted transformation matrix for size
+        replace_barcode('barcode1-8-7', new_sn, 0.35, 10.0, fg_color='#ffffff', transform_matrix=sn_transform_matrix)
 
         # Write the modified SVG to a new file
         print("Saving the modified SVG file...")

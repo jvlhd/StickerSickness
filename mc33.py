@@ -1,91 +1,95 @@
 import xml.etree.ElementTree as ET
 import barcode
-from barcode.writer import ImageWriter
-import base64
+from barcode.writer import SVGWriter
 from io import BytesIO
-from PIL import Image, ImageChops
 
-class ImageWithoutTextWriter(ImageWriter):
-    def _paint_text(self, xpos, ypos):
+class CustomSVGWriter(SVGWriter):
+    def _init(self, code):
+        super()._init(code)
+        self._code = code
+
+    def _paint_background(self, code):
         pass
 
-def trim_whitespace(image):
-    bg = Image.new(image.mode, image.size, (255, 255, 255))
-    diff = ImageChops.difference(image, bg)
-    bbox = diff.getbbox()
-    if bbox:
-        return image.crop(bbox)
-    return image
-
-def generate_barcode_image(data, width, height):
+def generate_barcode_svg(data, module_width, module_height, fg_color):
     CODE128 = barcode.get_barcode_class('code128')
-    writer = ImageWithoutTextWriter()
+    writer = CustomSVGWriter()
+
     barcode_obj = CODE128(data, writer=writer)
     buffer = BytesIO()
-    barcode_obj.write(buffer)
+    barcode_obj.write(buffer, {
+        'module_width': module_width,
+        'module_height': module_height,
+        'quiet_zone': 1.0,
+        'font_size': 0,
+        'text_distance': 1.0,
+        'background': None,
+        'foreground': fg_color,
+    })
     buffer.seek(0)
-    img = Image.open(buffer)
-    img = trim_whitespace(img)
-    img = img.resize((width, height), Image.LANCZOS)
-    buffer = BytesIO()
-    img.save(buffer, format="PNG")
-    return buffer.getvalue()
+    svg_data = buffer.getvalue().decode('utf-8')
 
-def edit_svg_label(svg_file_path, output_svg_file_path, new_pn, new_data, new_sn):
+    # Remove the unnecessary rect element if it exists
+    svg_data = svg_data.replace('<rect width="100%" height="100%" style="fill:#00112b"/>', '')
+    return svg_data
+
+def edit_svg_label(svg_file_path, output_svg_file_path, new_pn, new_mfd, new_sn):
     try:
+        print("Loading SVG file...")
         tree = ET.parse(svg_file_path)
         root = tree.getroot()
+
         namespaces = {'svg': 'http://www.w3.org/2000/svg'}
 
-        def replace_text(element_id, new_text):
+        def replace_text(tspan_id, new_text):
             found = False
-            for elem in root.findall(f".//svg:text[@id='{element_id}']", namespaces):
-                for tspan in elem.findall(f".//svg:tspan", namespaces):
-                    tspan.text = new_text
-                    original_size = float(tspan.get('style').split('font-size:')[1].split('px')[0])
-                    new_size = original_size * 0.9
-                    tspan.set('style', tspan.get('style').replace(f'font-size:{original_size}px', f'font-size:{new_size}px'))
+            for elem in root.findall(f".//svg:tspan[@id='{tspan_id}']", namespaces):
+                elem.text = new_text
                 found = True
             if not found:
-                print(f"Element with id '{element_id}' not found.")
+                print(f"Element with id '{tspan_id}' not found.")
 
-        replace_text('text6389-4-3-7-1-1-47-8-8-4', f'P/N: {new_pn}')
-        replace_text('text6389-4-3-7-1-1-47-8-6-9', f'MFD : {new_data}')
-        replace_text('text6389-4-3-7-1-1-47-8-69-9', f'(S)S/N: {new_sn}')
+        print("Replacing PN...")
+        replace_text('tspan6387-8-4-6-1-7-9-9-9-3', f'P/N: {new_pn}')
+        print("Replacing MFD...")
+        replace_text('tspan6387-8-4-6-1-7-9-9-6-7', f'MFD: {new_mfd}')
+        print("Replacing SN...")
+        replace_text('tspan6387-8-4-6-1-7-9-9-8-0', f'S/N: {new_sn}')
 
-        def replace_barcode(group_id, new_barcode_data):
+        def replace_barcode(group_id, new_barcode_data, module_width, module_height, fg_color, transform_matrix):
             found = False
             for group in root.findall(f".//svg:g[@id='{group_id}']", namespaces):
                 found = True
                 for elem in list(group):
                     group.remove(elem)
-                barcode_image = generate_barcode_image(new_barcode_data, width=800, height=100)
-                if barcode_image is None:
+
+                print(f"Generating new barcode image for {group_id}...")
+                barcode_svg = generate_barcode_svg(new_barcode_data, module_width, module_height, fg_color)
+                if barcode_svg is None:
                     print("Failed to generate barcode image.")
                     return
-                barcode_b64 = base64.b64encode(barcode_image).decode('utf-8')
-                image_href = f"data:image/png;base64,{barcode_b64}"
-                image_elem = ET.Element('{http://www.w3.org/2000/svg}image', {
-                    'id': f'{group_id}_image',
-                    'x': '0',
-                    'y': '0',
-                    'width': '100',
-                    'height': '15',
-                    'href': image_href,
-                    'preserveAspectRatio': 'none'
-                })
-                group.append(image_elem)
-            if not found:
-                print(f"Element with id '{group_id}' not found.")
 
-        replace_barcode('barcode4', new_sn)
+                barcode_elem = ET.fromstring(barcode_svg)
+                for element in barcode_elem:
+                    group.append(element)
+                group.set('transform', transform_matrix)
+            if not found:
+                print(f"Element z id '{group_id}' nie znaleziony.")
+
+        print("Replacing barcode...")
+        barcode_transform_matrix = "matrix(0.2,0,0,0.1,12.035956,21.379793)"  # Adjusting the matrix for smaller size
+        replace_barcode('barcode4', new_sn, 0.35, 6.0, '#000000', barcode_transform_matrix)
+
+        print("Saving the modified SVG file...")
         tree.write(output_svg_file_path)
+
         print("Done.")
     except Exception as e:
         print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
     new_pn = input("Enter new PN: ")
-    new_data = input("Enter new MFD: ")
+    new_mfd = input("Enter new MFD: ")
     new_sn = input("Enter new SN: ")
-    edit_svg_label('label.svg', 'edited_label.svg', new_pn, new_data, new_sn)
+
+    edit_svg_label('label.svg', 'edited_label.svg', new_pn, new_mfd, new_sn)
