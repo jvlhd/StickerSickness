@@ -2,7 +2,6 @@ import xml.etree.ElementTree as ET
 import barcode
 from barcode.writer import SVGWriter
 from io import BytesIO
-import base64
 from PIL import Image
 from pylibdmtx.pylibdmtx import encode
 
@@ -36,7 +35,14 @@ def generate_barcode_svg(data, module_width, module_height, fg_color):
     svg_data = svg_data.replace('<rect width="100%" height="100%" style="fill:none"/>', '')
     svg_data = svg_data.replace('<rect width="100%" height="100%" style="fill:None"/>', '')
 
-    return svg_data
+    root = ET.fromstring(svg_data)
+    width = None
+    for elem in root.iter():
+        if 'width' in elem.attrib:
+            width = float(elem.attrib['width'][:-2])
+            break
+
+    return svg_data, width
 
 def generate_datamatrix_svg(data, size):
     encoded = encode(data.encode('utf-8'))
@@ -68,7 +74,7 @@ def edit_ck3_label(svg_file_path, output_svg_file_path, new_cn, new_sn):
         replace_text('text4393-4-8', f'CN:{new_cn}')
         replace_text('text4389-8-2', f'SN:{new_sn}')
 
-        def replace_barcode(group_id, new_barcode_data, module_width, module_height, fg_color, transform_matrix):
+        def replace_barcode(group_id, new_barcode_data, module_width, module_height, fg_color, transform_matrix, y_offset):
             found = False
             for group in root.findall(f".//svg:g[@id='{group_id}']", namespaces):
                 found = True
@@ -76,7 +82,7 @@ def edit_ck3_label(svg_file_path, output_svg_file_path, new_cn, new_sn):
                 for elem in list(group):
                     group.remove(elem)
 
-                barcode_svg = generate_barcode_svg(new_barcode_data, module_width, module_height, fg_color)
+                barcode_svg, barcode_width = generate_barcode_svg(new_barcode_data, module_width, module_height, fg_color)
                 if barcode_svg is None:
                     print("Failed to generate barcode image.")
                     return
@@ -85,18 +91,41 @@ def edit_ck3_label(svg_file_path, output_svg_file_path, new_cn, new_sn):
                 for element in barcode_elem:
                     group.append(element)
                 group.set('transform', transform_matrix)
+
+                rect = ET.Element(f'{{{namespaces["svg"]}}}rect', {
+                    'x': '0',
+                    'y': str(module_height * 10 + y_offset),
+                    'width': str(barcode_width * 3.82),
+                    'height': '30',
+                    'style': 'fill:white;stroke:none'
+                })
+                group.insert(0, rect)
+
             if not found:
                 print(f"Element with id '{group_id}' not found.")
 
         # Replace CN barcode with adjusted dimensions
         print("Replacing CN barcode...")
         cn_transform_matrix = "matrix(0.15,0,0,0.1,15.198503,19.832505)"  # Adjusted transformation matrix for size
-        replace_barcode('g2', new_cn, 0.45, 10.0, fg_color='#ffffff', transform_matrix=cn_transform_matrix)
+        replace_barcode('g2', new_cn, 0.45, 10.0, fg_color='#00112b', transform_matrix=cn_transform_matrix, y_offset=-90)
 
         # Replace SN barcode with adjusted dimensions
         print("Replacing SN barcode...")
         sn_transform_matrix = "matrix(0.15,0,0,0.1,15.198503,26.832505)"  # Adjusted transformation matrix for size
-        replace_barcode('barcode1-8-7', new_sn, 0.45, 10.0, fg_color='#ffffff', transform_matrix=sn_transform_matrix)
+        replace_barcode('barcode1-8-7', new_sn, 0.45, 10.0, fg_color='#00112b', transform_matrix=sn_transform_matrix, y_offset=-90)
+
+        #rect_width = len(new_cn)*36
+        #rect_width = 5*36
+        #for group in root.findall(f".//svg:g[@id='g2']", namespaces):
+        #    rect = ET.Element(f'{{{namespaces["svg"]}}}rect', {
+        #        'x': '0',  # Adjust x position
+        #        'y': '4',  # Adjust y position to be below the barcode
+        #        'width': str(rect_width),  # Width of the rectangle
+        #        'height': '37',  # Height of the rectangle
+        #        'style': 'fill:white;stroke:none'
+        #   })
+        #    group.insert(0, rect)
+
 
         # Write the modified SVG to a new file
         tree.write(output_svg_file_path)
@@ -106,7 +135,7 @@ def edit_ck3_label(svg_file_path, output_svg_file_path, new_cn, new_sn):
         print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
-    new_cn = input("Enter new CN: ")
-    new_sn = input("Enter new SN: ")
+    new_cn = "aaaa"
+    new_sn = "aa"
 
-    edit_ck3_label('ck3.svg', 'edited_ck3.svg', new_cn, new_sn)
+    edit_ck3_label('ck3_2.svg', 'edited_ck3.svg', new_cn, new_sn)
