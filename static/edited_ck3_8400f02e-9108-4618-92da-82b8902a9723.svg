@@ -1,0 +1,117 @@
+<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" xmlns:ns1="http://www.inkscape.org/namespaces/inkscape" xmlns:ns2="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" width="210mm" height="297mm" viewBox="0 0 210 297" version="1.1" id="svg1" ns1:version="1.3.2 (091e20e, 2023-11-25, custom)" ns2:docname="CK3.svg">
+  <ns2:namedview id="namedview1" pagecolor="#ffffff" bordercolor="#000000" borderopacity="0.25" ns1:showpageshadow="2" ns1:pageopacity="0.0" ns1:pagecheckerboard="0" ns1:deskcolor="#d1d1d1" ns1:document-units="mm" ns1:zoom="0.66724888" ns1:cx="397.15316" ns1:cy="561.25984" ns1:window-width="1680" ns1:window-height="987" ns1:window-x="1672" ns1:window-y="-8" ns1:window-maximized="1" ns1:current-layer="layer1" />
+  <ns0:defs id="defs1" />
+  <ns0:g ns1:label="Warstwa 1" ns1:groupmode="layer" id="layer1">
+    <ns0:rect style="fill:#00112b;fill-opacity:1;stroke:none;stroke-width:0.0477763" id="rect4385-3-5" width="62.021294" height="19.545128" x="10.585411" y="14.061007" />
+    <ns0:text style="font-variant:normal;font-weight:normal;font-size:2.45531px;font-family:F1;-inkscape-font-specification:F1;writing-mode:lr-tb;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.007493" id="text4389-8-2" x="15.037852" y="26.198149"><ns0:tspan ns2:role="line" id="tspan4387-1-2" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.45531px;font-family:'MS Reference Sans Serif';-inkscape-font-specification:'MS Reference Sans Serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;stroke-width:0.007493" x="15.037852" y="26.198149">SN:dfgdfgdgdg</ns0:tspan></ns0:text>
+    <ns0:text style="font-variant:normal;font-weight:normal;font-size:2.45531px;font-family:F1;-inkscape-font-specification:F1;writing-mode:lr-tb;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.007493" id="text4393-4-8" x="15.060634" y="19.286627"><ns0:tspan ns2:role="line" id="tspan4391-0-1" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.45531px;font-family:'MS Reference Sans Serif';-inkscape-font-specification:'MS Reference Sans Serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;stroke-width:0.007493" x="15.060634" y="19.286627">CN:dfgdfgdfgdfgdfg</ns0:tspan></ns0:text>
+    <ns0:path d="m 71.365454,17.467835 c 0,-0.97357 -0.77863,-1.7641 -1.74475,-1.7641 H 13.278415 c -0.966121,0 -1.744744,0.79053 -1.744744,1.7641 v 12.3036 c 0,0.97357 0.778623,1.76409 1.744744,1.76409 h 56.342299 c 0.96611,0 1.74474,-0.79052 1.74474,-1.76409 z" style="fill:none;stroke:#ff00ff;stroke-width:0.168213;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" id="path4395-2-2" />
+    <ns0:g id="barcode1-8-7" style="fill:#ffffff;stroke-width:1.4692" transform="matrix(0.15,0,0,0.1,15.198503,26.832505)">
+      <ns0:rect x="0" y="10.0" width="256.895" height="30" style="fill:white;stroke:none" /><ns0:g id="barcode_group">
+        
+        <ns0:rect x="1.000mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="2.350mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="3.700mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="5.950mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="8.200mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="9.550mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="10.900mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="11.800mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="14.500mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="15.850mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="17.200mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="18.550mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="20.800mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="23.050mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="24.400mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="25.750mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="26.650mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="29.350mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="30.700mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="32.050mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="33.400mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="35.650mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="37.900mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="39.250mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="40.600mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="41.950mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="43.300mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="45.550mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="47.800mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="49.150mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="50.500mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="51.850mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="53.200mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="55.450mm" y="1.000mm" width="1.350mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="57.700mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="58.600mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="60.400mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="62.650mm" y="1.000mm" width="1.350mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="64.450mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="65.350mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:text x="33.625mm" y="12.000mm" style="fill:#00112b;font-size:0pt;text-anchor:middle;">dfgdfgdgdg</ns0:text>
+    </ns0:g>
+</ns0:g>
+    <ns0:g id="g2" transform="matrix(0.15,0,0,0.1,15.198503,19.832505)">
+      <ns0:rect x="0" y="10.0" width="351.44" height="30" style="fill:white;stroke:none" /><ns0:g id="barcode_group">
+        
+        <ns0:rect x="1.000mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="2.350mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="3.700mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="5.950mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="8.200mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="9.550mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="10.900mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="11.800mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="14.500mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="15.850mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="17.200mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="18.550mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="20.800mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="23.050mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="24.400mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="25.750mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="26.650mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="29.350mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="30.700mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="32.050mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="33.400mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="35.650mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="37.900mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="39.250mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="40.600mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="41.500mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="44.200mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="45.550mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="46.900mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="48.250mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="50.500mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="52.750mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="54.100mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="55.450mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="56.350mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="59.050mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="60.400mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="61.750mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="63.100mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="65.350mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="67.600mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="68.950mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="70.300mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="71.200mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="73.900mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="75.250mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="76.600mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="77.950mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="80.200mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="81.100mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="82.900mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="85.150mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="87.400mm" y="1.000mm" width="1.350mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="89.200mm" y="1.000mm" width="0.450mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:rect x="90.100mm" y="1.000mm" width="0.900mm" height="10.000mm" style="fill:#00112b;" />
+        <ns0:text x="46.000mm" y="12.000mm" style="fill:#00112b;font-size:0pt;text-anchor:middle;">dfgdfgdfgdfgdfg</ns0:text>
+    </ns0:g>
+</ns0:g>
+  </ns0:g>
+</ns0:svg>

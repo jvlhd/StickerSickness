@@ -61,6 +61,12 @@ def edit_tc5x_label(svg_file_path, output_svg_file_path, new_model, new_sn, new_
             for elem in root.findall(f".//svg:text[@id='{element_id}']", namespaces):
                 for tspan in elem.findall(f".//svg:tspan", namespaces):
                     tspan.text = new_text
+                # Opcjonalnie dostosuj pozycję `transform`, aby skorygować wyrównanie tekstu
+                transform = elem.attrib.get('transform')
+                if transform:
+                    # Skoryguj wartość `transform` lub dostosuj według potrzeb
+                    corrected_transform = transform.replace('translate(', 'matrix(1,0,0,1,') # Przykład poprawki
+                    elem.set('transform', corrected_transform)
                 found = True
             if not found:
                 print(f"Element with id '{element_id}' not found.")

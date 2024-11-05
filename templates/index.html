@@ -20,6 +20,10 @@
         .form-control::placeholder {
             color: #ccc;
         }
+        .alert {
+            display: none;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -29,10 +33,26 @@
     </nav>
     <div class="container mt-5">
         <h1 class="text-center mb-5">Edit Labels</h1>
+
+        <!-- Globalny przełącznik -->
+        <div class="text-center mb-4">
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="globalBuffer" value="true">
+                <label class="form-check-label" for="globalBuffer">Chcę aby etykiety generowały się na jednej stronie</label>
+            </div>
+        </div>
+
+        <div id="alert-success" class="alert alert-success" role="alert">
+            Etykieta została wygenerowana i zapisana.
+        </div>
+        <div id="alert-error" class="alert alert-danger" role="alert">
+            Wystąpił błąd podczas generowania etykiety.
+        </div>
+
         <div class="row">
             <div class="col-md-4">
                 <h2>TC5X Label</h2>
-                <form action="/process_tc5x" method="POST">
+                <form id="tc5x-form" action="/process_tc5x" method="POST">
                     <div class="form-group">
                         <label for="model">Model</label>
                         <input type="text" class="form-control" id="model" name="model" required>
@@ -54,7 +74,7 @@
             </div>
             <div class="col-md-4">
                 <h2>MC33 Label</h2>
-                <form action="/process_mc33" method="POST">
+                <form id="mc33-form" action="/process_mc33" method="POST">
                     <div class="form-group">
                         <label for="pn">PN</label>
                         <input type="text" class="form-control" id="pn" name="pn" required>
@@ -72,7 +92,7 @@
             </div>
             <div class="col-md-4">
                 <h2>CK3 Label</h2>
-                <form action="/process_ck3" method="POST">
+                <form id="ck3-form" action="/process_ck3" method="POST">
                     <div class="form-group">
                         <label for="cn">CN</label>
                         <input type="text" class="form-control" id="cn" name="cn" required>
@@ -85,14 +105,45 @@
                 </form>
             </div>
         </div>
+        <div class="text-center mt-4">
+            <button class="btn btn-success" onclick="window.location.href='/download_all_labels'">To już wszystkie, pobieramy!</button>
+        </div>
     </div>
     <footer class="footer mt-5 py-3 text-center">
         <div class="container">
             <span class="text-muted">StickerSickness © 2024</span>
         </div>
     </footer>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function handleFormSubmit(formId) {
+            $(formId).on('submit', function(event) {
+                event.preventDefault();
+                let buffer = $('#globalBuffer').is(':checked');  // Sprawdzanie globalnego przełącznika
+                let formData = $(this).serialize() + "&buffer=" + buffer;
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        $('#alert-success').fadeIn().delay(3000).fadeOut();  // Pokazanie powiadomienia o sukcesie
+                    },
+                    error: function(xhr, status, error) {
+                        $('#alert-error').fadeIn().delay(3000).fadeOut();  // Pokazanie powiadomienia o błędzie
+                    }
+                });
+            });
+        }
+
+        $(document).ready(function() {
+            handleFormSubmit('#tc5x-form');
+            handleFormSubmit('#mc33-form');
+            handleFormSubmit('#ck3-form');
+        });
+    </script>
 </body>
 </html>
